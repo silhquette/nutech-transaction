@@ -22,6 +22,12 @@ export class UserRepository {
         return row as User;
     }
 
+    async findByEmail(email: string): Promise<User | null> {
+        const row = await this.prisma.user.findUnique({ where: { email } });
+        if (!row) return null;
+        return row as User;
+    }
+
     async create(payload: Omit<User, "id" | "createdAt" | "updatedAt" | "deletedAt">): Promise<User> {
         const created = await this.prisma.user.create({ data: payload });
         return created as User;

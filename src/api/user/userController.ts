@@ -17,7 +17,7 @@ class UserController {
 
 	public createUser: RequestHandler = async (req: Request, res: Response) => {
 		const body = req.body as CreateUserInput;
-		const serviceResponse = await userService.create(body);
+		const serviceResponse = await userService.register(body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
