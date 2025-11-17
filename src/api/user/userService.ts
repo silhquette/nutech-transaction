@@ -15,13 +15,13 @@ export class UserService {
 	// Retrieves all users from the database
 	async findAll(): Promise<ServiceResponse<User[] | null>> {
 		try {
-			const users = await this.userRepository.findAllAsync();
+			const users = await this.userRepository.findAll();
 			if (!users || users.length === 0) {
 				return ServiceResponse.failure("No Users found", null, StatusCodes.NOT_FOUND);
 			}
 			return ServiceResponse.success<User[]>("Users found", users);
 		} catch (ex) {
-			const errorMessage = `Error finding all users: $${(ex as Error).message}`;
+			const errorMessage = `Error finding all users: ${(ex as Error).message}`;
 			logger.error(errorMessage);
 			return ServiceResponse.failure(
 				"An error occurred while retrieving users.",
@@ -32,17 +32,91 @@ export class UserService {
 	}
 
 	// Retrieves a single user by their ID
-	async findById(id: number): Promise<ServiceResponse<User | null>> {
+	async findById(id: string): Promise<ServiceResponse<User | null>> {
 		try {
-			const user = await this.userRepository.findByIdAsync(id);
+			const user = await this.userRepository.findById(id);
 			if (!user) {
 				return ServiceResponse.failure("User not found", null, StatusCodes.NOT_FOUND);
 			}
 			return ServiceResponse.success<User>("User found", user);
 		} catch (ex) {
-			const errorMessage = `Error finding user with id ${id}:, ${(ex as Error).message}`;
+			const errorMessage = `Error finding user with id ${id}: ${(ex as Error).message}`;
 			logger.error(errorMessage);
-			return ServiceResponse.failure("An error occurred while finding user.", null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure(
+				"An error occurred while finding user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
+
+	// Creates a new user
+	async create(payload: Omit<User, "id" | "createdAt" | "updatedAt" | "deletedAt">): Promise<ServiceResponse<User | null>> {
+		try {
+			const user = await this.userRepository.create(payload);
+			return ServiceResponse.success<User>("User created successfully", user, StatusCodes.CREATED);
+		} catch (ex) {
+			const errorMessage = `Error creating user: ${(ex as Error).message}`;
+			logger.error(errorMessage);
+			return ServiceResponse.failure(
+				"An error occurred while creating user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
+
+	// Updates an existing user
+	async update(id: string, data: Partial<Omit<User, "id" | "createdAt" | "updatedAt" | "deletedAt">>): Promise<ServiceResponse<User | null>> {
+		try {
+			const user = await this.userRepository.update(id, data);
+			if (!user) {
+				return ServiceResponse.failure("User not found", null, StatusCodes.NOT_FOUND);
+			}
+			return ServiceResponse.success<User>("User updated successfully", user);
+		} catch (ex) {
+			const errorMessage = `Error updating user with id ${id}: ${(ex as Error).message}`;
+			logger.error(errorMessage);
+			return ServiceResponse.failure(
+				"An error occurred while updating user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
+
+	// Soft deletes a user (sets deletedAt timestamp)
+	async softDelete(id: string): Promise<ServiceResponse<User | null>> {
+		try {
+			const user = await this.userRepository.softDelete(id);
+			if (!user) {
+				return ServiceResponse.failure("User not found", null, StatusCodes.NOT_FOUND);
+			}
+			return ServiceResponse.success<User>("User deleted successfully", user);
+		} catch (ex) {
+			const errorMessage = `Error deleting user with id ${id}: ${(ex as Error).message}`;
+			logger.error(errorMessage);
+			return ServiceResponse.failure(
+				"An error occurred while deleting user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
+
+	// Hard deletes a user (permanently removes from database)
+	async hardDelete(id: string): Promise<ServiceResponse<null>> {
+		try {
+			await this.userRepository.hardDelete(id);
+			return ServiceResponse.success<null>("User permanently deleted", null);
+		} catch (ex) {
+			const errorMessage = `Error permanently deleting user with id ${id}: ${(ex as Error).message}`;
+			logger.error(errorMessage);
+			return ServiceResponse.failure(
+				"An error occurred while permanently deleting user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
 		}
 	}
 }

@@ -1,21 +1,48 @@
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
 import { z } from "zod";
 
-import { commonValidations } from "@/common/utils/commonValidation";
-
 extendZodWithOpenApi(z);
 
-export type User = z.infer<typeof UserSchema>;
 export const UserSchema = z.object({
-	id: z.number(),
-	name: z.string(),
-	email: z.string().email(),
-	age: z.number(),
-	createdAt: z.date(),
-	updatedAt: z.date(),
+  id: z.string().uuid(),
+  email: z.string().email(),
+  password: z.string(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
+  profileImage: z.string().optional().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  deletedAt: z.date().optional().nullable(),
 });
+
+export type User = z.infer<typeof UserSchema>;
+
+// Public schema untuk response (tanpa password)
+export const PublicUserSchema = UserSchema.omit({ password: true });
 
 // Input Validation for 'GET users/:id' endpoint
 export const GetUserSchema = z.object({
-	params: z.object({ id: commonValidations.id }),
+  params: z.object({ id: z.string().uuid() }),
 });
+
+// Input Validation for 'POST users' endpoint
+export const CreateUserSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  profileImage: z.string().url().optional(),
+});
+
+export type CreateUserInput = z.infer<typeof CreateUserSchema>;
+
+// Input Validation for 'PUT users/:id' endpoint
+export const UpdateUserSchema = z.object({
+  email: z.string().email().optional(),
+  password: z.string().min(8, "Password must be at least 8 characters").optional(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
+  profileImage: z.string().url().optional().nullable(),
+});
+
+export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;
