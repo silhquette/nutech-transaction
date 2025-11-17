@@ -4,7 +4,7 @@ import { z } from "zod";
 extendZodWithOpenApi(z);
 
 export const UserSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().cuid(),
   email: z.string().email(),
   password: z.string(),
   firstName: z.string().optional().nullable(),
@@ -22,7 +22,7 @@ export const PublicUserSchema = UserSchema.omit({ password: true });
 
 // Input Validation for 'GET users/:id' endpoint
 export const GetUserSchema = z.object({
-  params: z.object({ id: z.string().uuid() }),
+  params: z.object({ id: z.string().cuid() }),
 });
 
 // Input Validation for 'POST users' endpoint
