@@ -18,4 +18,13 @@ export class ProfileRepository {
             profileImage: row.profileImage,
         } as Profile;
     }
+    
+    async update(email: string, data: Partial<Profile>): Promise<Profile | null> {
+        try {
+            const updated = await this.prisma.user.update({ where: { email, deletedAt: null }, data });
+            return updated as Profile;
+        } catch {
+            return null;
+        }
+    }
 }

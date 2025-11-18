@@ -30,6 +30,25 @@ export class ProfileService {
 			);
 		}
 	}
+
+	// Updates an existing user
+	async update(id: string, data: Partial<Profile>): Promise<AuthServiceResponse<Profile | null>> {
+		try {
+			const user = await this.profileRepository.update(id, data);
+			if (!user) {
+				return AuthServiceResponse.failure("Profile not found", null, StatusCodes.NOT_FOUND);
+			}
+			return AuthServiceResponse.success<Profile>("Profile updated successfully", user);
+		} catch (ex) {
+			const errorMessage = `Error updating user with id ${id}: ${(ex as Error).message}`;
+			logger.error(errorMessage);
+			return AuthServiceResponse.failure(
+				"An error occurred while updating user.",
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR,
+			);
+		}
+	}
 }
 
 export const profileService = new ProfileService();
