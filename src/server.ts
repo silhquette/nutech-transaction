@@ -12,6 +12,7 @@ import { env } from "@/common/utils/envConfig";
 import { authRouter } from "@/api/auth/authRouter";
 import { authMiddleware } from "@/common/middleware/authMiddleware";
 import { profileRouter } from "@/api/profile/profileRouter";
+import { bannerRouter } from "./api/profile copy/bannerRouter";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -34,6 +35,7 @@ app.use("/health-check", healthCheckRouter);
 app.use("/users", userRouter);
 app.use("", authRouter);
 app.use("/profile", profileRouter);
+app.use("/banner", bannerRouter);
 
 // Swagger UI
 app.use(openAPIRouter);
