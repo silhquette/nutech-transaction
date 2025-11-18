@@ -39,3 +39,15 @@ model Banner {
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 }
+
+model Service {
+  id            String   @id @default(cuid())
+  service_code  String   @unique
+  service_name  String   @unique
+  service_icon  String
+  service_tarif Float
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+}
