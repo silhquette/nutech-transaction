@@ -14,6 +14,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TransactionType {
+  TOPUP
+  PAYMENT
+}
+
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
@@ -22,11 +27,16 @@ model User {
   lastName      String?
   profileImage  String?
   
+  balance       Float  @default(0.00)
+  
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 
+  transactions  Transaction[]
+
   @@index([email])
+  @@index([deletedAt])
 }
 
 model Banner {
@@ -50,4 +60,25 @@ model Service {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
+
+  transactions  Transaction[]
+}
+
+model Transaction {
+  id              String           @id @default(cuid())
+  userId          String
+  serviceId       String?
+  invoiceNumber   String           @unique
+  type            TransactionType
+  description     String?
+  amount          Float
+  createdAt       DateTime         @default(now())
+  deletedAt       DateTime?
+
+  user            User             @relation(fields: [userId], references: [id])
+  service         Service?         @relation(fields: [serviceId], references: [id])
+
+  @@index([userId])
+  @@index([invoiceNumber])
+  @@index([deletedAt])
 }
