@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from "express";
 
-import { bannerService } from "@/api/profile copy/bannerService";
+import { bannerService } from "@/api/banner/bannerService";
 
 class BannerController {
     public getBanners: RequestHandler = async (_req: Request, res: Response) => {

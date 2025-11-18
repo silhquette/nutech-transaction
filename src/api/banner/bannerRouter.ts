@@ -1,8 +1,8 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import express, { type Router } from "express";
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
-import { bannerController } from "@/api/profile copy/bannerController";
-import { BannerSchema } from "@/api/profile copy/bannerModel";
+import { bannerController } from "@/api/banner/bannerController";
+import { BannerSchema } from "@/api/banner/bannerModel";
 import z from "zod";
 
 export const bannerRegistry = new OpenAPIRegistry();
