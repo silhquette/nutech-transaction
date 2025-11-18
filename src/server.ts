@@ -10,9 +10,9 @@ import rateLimiter from "@/common/middleware/rateLimiter";
 import requestLogger from "@/common/middleware/requestLogger";
 import { env } from "@/common/utils/envConfig";
 import { authRouter } from "@/api/auth/authRouter";
-import { authMiddleware } from "@/common/middleware/authMiddleware";
 import { profileRouter } from "@/api/profile/profileRouter";
 import { bannerRouter } from "./api/banner/bannerRouter";
+import { serviceRouter } from "./api/service/serviceRouter";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -36,6 +36,7 @@ app.use("/users", userRouter);
 app.use("", authRouter);
 app.use("/profile", profileRouter);
 app.use("/banner", bannerRouter);
+app.use("/service", serviceRouter);
 
 // Swagger UI
 app.use(openAPIRouter);
