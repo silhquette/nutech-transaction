@@ -1,23 +1,25 @@
-# Base stage with pnpm setup
+# Base stage
 FROM node:23.11.1-slim AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+# Tidak perlu setup PNPM atau Corepack jika pakai npm
 WORKDIR /app
 
 # Production dependencies stage
 FROM base AS prod-deps
-COPY package.json pnpm-lock.yaml ./
-# Install only production dependencies
-RUN --mount=type=cache,id=s/737c3746-87d3-44c2-8d62-d362e5dbb311-/pnpm/store,target=/pnpm/store pnpm install --prod --frozen-lockfile --ignore-scripts
+COPY package.json package-lock.json ./
+# Install only production dependencies using npm
+RUN npm install --omit=dev --no-frozen-lockfile --ignore-scripts --cache /tmp/npmcache
+# Cleanup cache
+RUN rm -rf /tmp/npmcache
 
 # Build stage - install all dependencies and build
 FROM base AS build
-COPY package.json pnpm-lock.yaml ./
-# Install all dependencies (including dev dependencies)
-RUN --mount=type=cache,id=s/737c3746-87d3-44c2-8d62-d362e5dbb311-/pnpm/store,target=/pnpm/store pnpm install --frozen-lockfile --ignore-scripts
+COPY package.json package-lock.json ./
+# Install all dependencies using npm
+RUN npm install --no-frozen-lockfile --ignore-scripts --cache /tmp/npmcache
 COPY . .
-RUN pnpm run build
+RUN npm run build
+# Cleanup cache
+RUN rm -rf /tmp/npmcache
 
 # Final stage - combine production dependencies and build output
 FROM node:23.11.1-alpine AS runner
