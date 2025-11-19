@@ -13,9 +13,9 @@ export class ProfileRepository {
         if (!row) return null;
         return {
             email: row.email,
-            firstName: row.firstName,
-            lastName: row.lastName,
-            profileImage: row.profileImage,
+            first_name: row.first_name,
+            last_name: row.last_name,
+            profile_image: row.profile_image,
         } as Profile;
     }
     

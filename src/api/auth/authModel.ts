@@ -13,9 +13,9 @@ export const RegisterSchema = z.object({
             invalid_type_error: "Paramter password tidak sesuai format",
         })
         .min(8, "Paramter password tidak sesuai format"),
-    firstName: z.string().optional(),
-    lastName: z.string().optional(),
-    profileImage: z.string().url("Paramter tidak sesuai format").optional(),
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+    profile_image: z.string().url("Paramter tidak sesuai format").optional(),
 });
 
 export const LoginSchema = z.object({

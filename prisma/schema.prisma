@@ -20,63 +20,63 @@ enum TransactionType {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
+  id            String  @id @default(cuid())
+  email         String  @unique
   password      String
-  firstName     String?
-  lastName      String?
-  profileImage  String?
-  
-  balance       Float  @default(0.00)
-  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
+  first_name    String?
+  last_name     String?
+  profile_image String?
 
-  transactions  Transaction[]
+  balance Float @default(0.00)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  transactions Transaction[]
 
   @@index([email])
   @@index([deletedAt])
 }
 
 model Banner {
-  id           String   @id @default(cuid())
-  banner_name  String   @unique
+  id           String @id @default(cuid())
+  banner_name  String @unique
   banner_image String
   description  String
-  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
 
 model Service {
-  id            String   @id @default(cuid())
-  service_code  String   @unique
-  service_name  String   @unique
+  id            String @id @default(cuid())
+  service_code  String @unique
+  service_name  String @unique
   service_icon  String
   service_tarif Float
-  
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?
 
-  transactions  Transaction[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  transactions Transaction[]
 }
 
 model Transaction {
-  id              String           @id @default(cuid())
-  userId          String
-  serviceId       String?
-  invoiceNumber   String           @unique
-  type            TransactionType
-  description     String?
-  amount          Float
-  createdAt       DateTime         @default(now())
-  deletedAt       DateTime?
+  id            String          @id @default(cuid())
+  userId        String
+  serviceId     String?
+  invoiceNumber String          @unique
+  type          TransactionType
+  description   String?
+  amount        Float
+  createdAt     DateTime        @default(now())
+  deletedAt     DateTime?
 
-  user            User             @relation(fields: [userId], references: [id])
-  service         Service?         @relation(fields: [serviceId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+  service Service? @relation(fields: [serviceId], references: [id])
 
   @@index([userId])
   @@index([invoiceNumber])

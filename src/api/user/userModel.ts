@@ -7,9 +7,9 @@ export const UserSchema = z.object({
   id: z.string().cuid(),
   email: z.string().email(),
   password: z.string(),
-  firstName: z.string().optional().nullable(),
-  lastName: z.string().optional().nullable(),
-  profileImage: z.string().optional().nullable(),
+  first_name: z.string().optional().nullable(),
+  last_name: z.string().optional().nullable(),
+  profile_image: z.string().optional().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
   deletedAt: z.date().optional().nullable(),
@@ -29,9 +29,9 @@ export const GetUserSchema = z.object({
 export const CreateUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  profileImage: z.string().url().optional(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  profile_image: z.string().url().optional(),
 });
 
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
@@ -40,9 +40,9 @@ export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export const UpdateUserSchema = z.object({
   email: z.string().email().optional(),
   password: z.string().min(8, "Password must be at least 8 characters").optional(),
-  firstName: z.string().optional().nullable(),
-  lastName: z.string().optional().nullable(),
-  profileImage: z.string().url().optional().nullable(),
+  first_name: z.string().optional().nullable(),
+  last_name: z.string().optional().nullable(),
+  profile_image: z.string().url().optional().nullable(),
 });
 
 export type UpdateUserInput = z.infer<typeof UpdateUserSchema>;

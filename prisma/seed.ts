@@ -17,8 +17,8 @@ async function main() {
     data: {
       email: 'admin@test.com',
       password: '$2b$10$WHFAqVWzNnG.Jc.89TqOf.1/xvl2EzadpdXkUWDraeEKXtBMs7JHm', // password: password
-      firstName: 'Admin',
-      lastName: 'User',
+      first_name: 'Admin',
+      last_name: 'User',
     },
   });
 
