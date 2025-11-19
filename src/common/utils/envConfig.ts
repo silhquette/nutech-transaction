@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import { z } from "zod";
 
 if (process.env.NODE_ENV !== "production") {
-	const dotenv = await import("dotenv");
-	dotenv.config();
+	// Dynamic import tapi bukan top-level await
+	import("dotenv").then((dotenv) => dotenv.config());
 }
 
 const envSchema = z.object({
