@@ -14,8 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm install --no-frozen-lockfile --ignore-scripts --cache /tmp/npmcache
 COPY . .
 
-# Add this line to generate the Prisma client before building the TypeScript code
-RUN npx prisma generate
+RUN DATABASE_URL=$DATABASE_URL npx prisma generate
 
 RUN npm run build
 RUN rm -rf /tmp/npmcache
