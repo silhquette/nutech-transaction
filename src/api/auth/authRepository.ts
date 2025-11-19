@@ -1,5 +1,5 @@
 import type { User } from "@/api/user/userModel";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export class AuthRepository {
 	private prisma: PrismaClient;

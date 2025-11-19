@@ -1,5 +1,5 @@
 import { Banner } from "./bannerModel";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export class BannerRepository {
     private prisma: PrismaClient;

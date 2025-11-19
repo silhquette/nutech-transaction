@@ -1,5 +1,5 @@
 import { Service } from "./serviceModel";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export class ServiceRepository {
     private prisma: PrismaClient;

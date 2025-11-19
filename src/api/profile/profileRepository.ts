@@ -1,5 +1,5 @@
 import { Profile } from "./profileModel";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 export class ProfileRepository {
     private prisma: PrismaClient;
