@@ -12,7 +12,7 @@ export class JwtUtils {
 	 */
 	static generateToken(payload: JwtPayload): string {
 		const options: SignOptions = {
-			expiresIn: env.JWT_EXPIRES_IN,
+			expiresIn: env.JWT_EXPIRES_IN as any,
 		};
 		
 		return jwt.sign(payload, env.JWT_SECRET, options);
