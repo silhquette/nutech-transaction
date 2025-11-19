@@ -1,4 +1,4 @@
-import { Profile } from "./profileModel";
+import { Profile, ProfileImageResponse } from "./profileModel";
 import { PrismaClient } from "@prisma/client";
 
 export class ProfileRepository {
@@ -27,4 +27,23 @@ export class ProfileRepository {
             return null;
         }
     }
+
+    async updateProfileImage(userId: string, imageUrl: string): Promise<Profile | null> {
+		const result: Array<ProfileImageResponse> = await this.prisma.$queryRaw`
+			UPDATE "User"
+			SET "profile_image" = ${imageUrl}, "updatedAt" = NOW()
+			WHERE id = ${userId}
+			AND "deletedAt" IS NULL
+			RETURNING email, "first_name", "last_name", "profile_image"
+		`;
+
+		if (!result || result.length === 0) return null;
+
+		return {
+			email: result[0].email,
+			first_name: result[0].first_name,
+			last_name: result[0].last_name,
+			profile_image: result[0].profile_image,
+		};
+	}
 }
